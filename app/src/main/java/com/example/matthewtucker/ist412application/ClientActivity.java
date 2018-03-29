@@ -16,6 +16,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import static android.content.Context.BLUETOOTH_SERVICE;
+import static com.example.matthewtucker.ist412application.R.styleable.Toolbar;
+
 public class ClientActivity extends AppCompatActivity {
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
