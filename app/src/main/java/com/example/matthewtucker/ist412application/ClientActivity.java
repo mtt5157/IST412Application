@@ -3,11 +3,18 @@ package com.example.matthewtucker.ist412application;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
+import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,15 +23,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static android.content.Context.BLUETOOTH_SERVICE;
 import static com.example.matthewtucker.ist412application.R.styleable.Toolbar;
 
 public class ClientActivity extends AppCompatActivity {
     private BluetoothAdapter mBluetoothAdapter;
+    private BluetoothLeScanner mBluetoothLeScanner;
+    private BtleScanCallback mScanCallback;
     private boolean mScanning;
     private Button startScan;
+    private Handler handler;
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int REQUEST_FINE_LOCATION =2;
+    private Map<String, BluetoothDevice> mScanResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +72,59 @@ public class ClientActivity extends AppCompatActivity {
     private void startScan(){
         if(!hasPermissions()|| mScanning){
             return;
+        }
+        List<ScanFilter> filters = new ArrayList<>();
+        ScanSettings settings  = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_POWER).build();
+        mScanResults = new HashMap<>();
+        mScanCallback = new BtleScanCallback(mScanResults);
+        mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
+        mBluetoothLeScanner.startScan(filters, settings, mScanCallback);
+        mScanning = true;
+        handler = new Handler();
+        handler.postDelayed(this::stopScan,5000);
+    }
+
+    private void stopScan(){
+       // if(mScanning && mBluetoothAdapter != null && mBluetoothAdapter.isEnabled()&& mBluetoothAdapter!=null){
+           // mBluetoothLeScanner.stopScan(mScanCallback);
+            //scanComplete();
+        if(!mScanResults.isEmpty()){
+            mScanResults.keySet().iterator().forEachRemaining(System.out::println);
+
+
+        }
+        else{
+            System.out.println("no work");
+        }
+    }
+
+    private class BtleScanCallback extends ScanCallback {
+        private Map<String, BluetoothDevice> mScanResults;
+
+        BtleScanCallback(Map<String, BluetoothDevice>scanResults){
+            this.mScanResults = scanResults;
+        }
+        @Override
+        public void onScanResult(int callbackType, ScanResult result){
+            addScanResult(result);
+        }
+
+        @Override
+        public void onBatchScanResults(List<ScanResult> results){
+            for(ScanResult result: results){
+                addScanResult(result);
+            }
+        }
+
+        @Override
+        public void onScanFailed(int errorCode){
+            Log.e("ClientActivity", "BLE scan failed with code"+ errorCode);
+        }
+
+        private void addScanResult(ScanResult result){
+            BluetoothDevice device = result.getDevice();
+            String deviceAddress = device.getAddress();
+            mScanResults.put(deviceAddress, device);
         }
     }
 

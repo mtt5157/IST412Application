@@ -29,6 +29,10 @@
         <activity
             android:name=".TestActivity"
             android:label="@string/title_activity_test"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewBasicRunDataActivity"
+            android:label="@string/title_activity_view_basic_run_data"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

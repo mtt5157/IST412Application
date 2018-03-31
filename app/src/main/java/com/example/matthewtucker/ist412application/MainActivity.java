@@ -14,6 +14,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     private Button connectToBoard;
+    private Button switchToRunData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ClientActivity.class));
             }
         });
+
+       switchToRunData = (Button) findViewById(R.id.switch_to_run_data);
+       switchToRunData.setOnClickListener(new View.OnClickListener(){
+           @Override
+           public void onClick(View v){
+               startActivity(new Intent(MainActivity.this,ViewBasicRunDataActivity.class));
+           }
+       });
 
     }
 
