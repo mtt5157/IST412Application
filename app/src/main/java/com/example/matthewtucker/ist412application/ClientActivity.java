@@ -1,10 +1,12 @@
 package com.example.matthewtucker.ist412application;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
@@ -12,12 +14,8 @@ import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.ParcelUuid;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,29 +28,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static android.content.Context.BLUETOOTH_SERVICE;
-import static com.example.matthewtucker.ist412application.R.styleable.Toolbar;
-
 public class ClientActivity extends AppCompatActivity {
-    private BluetoothAdapter mBluetoothAdapter;
-    private BluetoothLeScanner mBluetoothLeScanner;
-    private BtleScanCallback mScanCallback;
-    private boolean mScanning;
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothLeScanner bluetoothLeScanner;
+    private BtleScanCallback btleScanCallback;
+    private boolean scanning;
     private Button startScan;
     private Button stopScan;
     private Handler handler;
     private String uuid;
     private UUID serviceUuid;
+    private boolean connected;
+    private BluetoothGatt gatt;
+    private Button disconnect;
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int REQUEST_FINE_LOCATION =2;
     private Map<String, BluetoothDevice> mScanResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+       super.onCreate(savedInstanceState);
         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
 
-        mBluetoothAdapter = bluetoothManager.getAdapter();
-        super.onCreate(savedInstanceState);
+        bluetoothAdapter = bluetoothManager.getAdapter();
+
         setContentView(R.layout.activity_client);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -72,8 +71,18 @@ public class ClientActivity extends AppCompatActivity {
             }
         });
 
-        uuid = "5154474C-9000-0101-0001-000000000001";
+        disconnect = (Button) findViewById(R.id.disconnect_button);
+        disconnect.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                disconnectGattServer();
+            }
+        });
+
+        uuid = "5154474C-9000-0101-0004-000000000000";
+        String uuid2 ="01284754-3C5A-4712-A2B6-13EE4BFE4562";
         serviceUuid = UUID.fromString(uuid);
+
     }
 
 
@@ -89,39 +98,58 @@ public class ClientActivity extends AppCompatActivity {
 
 
     private void startScan(){
-        if(!hasPermissions()|| mScanning){
+        if(!hasPermissions()|| scanning){
             return;
         }
+        disconnectGattServer();
+
+        mScanResults = new HashMap<>();
+        btleScanCallback = new BtleScanCallback(mScanResults);
+        bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
+
+        ScanFilter scanFilter = new ScanFilter.Builder().setDeviceName("BLE5").build();
         List<ScanFilter> filters = new ArrayList<>();
-        ScanFilter scanFilter = new ScanFilter.Builder().setServiceUuid(new ParcelUuid(serviceUuid)).build();
         filters.add(scanFilter);
         ScanSettings settings  = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_POWER).build();
-        mScanResults = new HashMap<>();
-        mScanCallback = new BtleScanCallback(mScanResults);
-        mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
-        mBluetoothLeScanner.startScan(filters, settings, mScanCallback);
-        mScanning = true;
+
+
+        bluetoothLeScanner.startScan(filters, settings, btleScanCallback);
+
         handler = new Handler();
-        handler.postDelayed(this::stopScan,5000);
+        scanning = true;
+
     }
 
     private void stopScan(){
-         if(mScanning && mBluetoothAdapter != null && mBluetoothAdapter.isEnabled()&& mBluetoothAdapter!=null) {
-             mBluetoothLeScanner.stopScan(mScanCallback);
+
+         if(scanning && bluetoothAdapter != null && bluetoothAdapter.isEnabled()&& bluetoothLeScanner !=null) {
+             bluetoothLeScanner.stopScan(btleScanCallback);
              scanComplete();
          }
 
-         mScanCallback = null;
-         mScanning = false;
+         btleScanCallback = null;
+         scanning = false;
          handler = null;
     }
 
     private void scanComplete(){
         if(mScanResults.isEmpty()){
+            System.out.println("empty");
             return;
+
+        }
+        else{
+            System.out.print("Full");
         }
 
         for(String deviceAddress: mScanResults.keySet()){
+            System.out.println("Device Name: "+mScanResults.get(deviceAddress).getName());
+            System.out.println("UUID: "+mScanResults.get(deviceAddress).getUuids());
+            System.out.println("DEVICE ADDRESS: "+deviceAddress);
+
+            BluetoothDevice device = mScanResults.get(deviceAddress);
+            connectDevice(device);
+
             Log.d("ClientActivity", "Found Device: "+ deviceAddress);
         }
     }
@@ -134,7 +162,8 @@ public class ClientActivity extends AppCompatActivity {
         }
         @Override
         public void onScanResult(int callbackType, ScanResult result){
-            addScanResult(result);
+               addScanResult(result);
+
         }
 
         @Override
@@ -156,8 +185,42 @@ public class ClientActivity extends AppCompatActivity {
         }
     }
 
+    private void connectDevice(BluetoothDevice device){
+        GattClientCallback clientCallback = new GattClientCallback();
+        gatt = device.connectGatt(this, false, clientCallback);
+    }
+
+    private class GattClientCallback extends BluetoothGattCallback{
+        @Override
+      public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState){
+            super.onConnectionStateChange(gatt, status, newState);
+
+            if(status == BluetoothGatt.GATT_FAILURE){
+                disconnectGattServer();
+                return;
+            }
+
+            if(newState == BluetoothProfile.STATE_CONNECTED){
+                connected = true;
+                System.out.println("Connected to "+gatt.getDevice().getName());
+            }
+
+            else if(newState == BluetoothProfile.STATE_DISCONNECTED){
+                disconnectGattServer();
+            }
+        }
+    }
+
+    public void disconnectGattServer(){
+        connected = false;
+        if(gatt != null){
+            gatt.disconnect();
+            gatt.close();
+        }
+    }
+
     private boolean hasPermissions(){
-        if(mBluetoothAdapter == null|| !mBluetoothAdapter.isEnabled()){
+        if(bluetoothAdapter == null|| !bluetoothAdapter.isEnabled()){
             requestBluetoothEnable();
             return false;
         }
