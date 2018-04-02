@@ -55,7 +55,7 @@ public class ViewBasicRunDataActivity extends AppCompatActivity {
         //row2 MAXSPEED
         TableRow row2 = new TableRow(this);
         TextView r2tv1 = new TextView(this);
-        r1tv1.setText("Max Speed: ");
+        r2tv1.setText("Max Speed: ");
         //row2 random speed array
         int[] speeds = new int[5];
         int maxSpeed = 0;
@@ -67,14 +67,14 @@ public class ViewBasicRunDataActivity extends AppCompatActivity {
         }
 
         TextView r2tv2 = new TextView(this);
-        r1tv2.setText(Integer.toString(maxSpeed));
+        r2tv2.setText(Integer.toString(maxSpeed));
         row2.addView(r2tv1);
         row2.addView(r2tv2);
 
         //row3 AVGSPEED
         TableRow row3 = new TableRow(this);
         TextView r3tv1 = new TextView(this);
-        r1tv1.setText("Average Speed: ");
+        r3tv1.setText("Average Speed: ");
         //row3 find avg speed
         int totalSpeed = 0;
         for (int i=0;i<5;i++)
@@ -84,19 +84,19 @@ public class ViewBasicRunDataActivity extends AppCompatActivity {
         int avgSpeed = totalSpeed/5;
 
         TextView r3tv2 = new TextView(this);
-        r1tv2.setText(Integer.toString(avgSpeed));
+        r3tv2.setText(Integer.toString(avgSpeed));
         row3.addView(r3tv1);
         row3.addView(r3tv2);
 
         //row4 MAXHEIGHT
         TableRow row4 = new TableRow(this);
         TextView r4tv1 = new TextView(this);
-        r1tv1.setText("Max Height: ");
+        r4tv1.setText("Max Height: ");
         //row4 find random max height
         int maxHeight = random.nextInt(15);
 
         TextView r4tv2 = new TextView(this);
-        r1tv2.setText(Integer.toString(maxHeight));
+        r4tv2.setText(Integer.toString(maxHeight));
         row4.addView(r4tv1);
         row4.addView(r4tv2);
 
