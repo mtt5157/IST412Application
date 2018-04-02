@@ -13,4 +13,12 @@
     tools:context="com.example.matthewtucker.ist412application.ClientActivity"
     tools:showIn="@layout/activity_client">
 
+    <Button
+        android:id="@+id/stop_scan_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="181dp"
+        android:text="Stop Scan" />
 </RelativeLayout>

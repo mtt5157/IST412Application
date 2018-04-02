@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.ParcelUuid;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static android.content.Context.BLUETOOTH_SERVICE;
 import static com.example.matthewtucker.ist412application.R.styleable.Toolbar;
@@ -37,7 +39,10 @@ public class ClientActivity extends AppCompatActivity {
     private BtleScanCallback mScanCallback;
     private boolean mScanning;
     private Button startScan;
+    private Button stopScan;
     private Handler handler;
+    private String uuid;
+    private UUID serviceUuid;
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int REQUEST_FINE_LOCATION =2;
     private Map<String, BluetoothDevice> mScanResults;
@@ -58,14 +63,28 @@ public class ClientActivity extends AppCompatActivity {
                 startScan();
             }
         });
+
+        stopScan = (Button) findViewById(R.id.stop_scan_button);
+        stopScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopScan();
+            }
+        });
+
+        uuid = "5154474C-9000-0101-0001-000000000001";
+        serviceUuid = UUID.fromString(uuid);
     }
 
 
     protected void onResume(){
         super.onResume();
+
         if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)){
             finish();
+            return;
         }
+
     }
 
 
@@ -74,6 +93,8 @@ public class ClientActivity extends AppCompatActivity {
             return;
         }
         List<ScanFilter> filters = new ArrayList<>();
+        ScanFilter scanFilter = new ScanFilter.Builder().setServiceUuid(new ParcelUuid(serviceUuid)).build();
+        filters.add(scanFilter);
         ScanSettings settings  = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_POWER).build();
         mScanResults = new HashMap<>();
         mScanCallback = new BtleScanCallback(mScanResults);
@@ -85,16 +106,23 @@ public class ClientActivity extends AppCompatActivity {
     }
 
     private void stopScan(){
-       // if(mScanning && mBluetoothAdapter != null && mBluetoothAdapter.isEnabled()&& mBluetoothAdapter!=null){
-           // mBluetoothLeScanner.stopScan(mScanCallback);
-            //scanComplete();
-        if(!mScanResults.isEmpty()){
-            mScanResults.keySet().iterator().forEachRemaining(System.out::println);
+         if(mScanning && mBluetoothAdapter != null && mBluetoothAdapter.isEnabled()&& mBluetoothAdapter!=null) {
+             mBluetoothLeScanner.stopScan(mScanCallback);
+             scanComplete();
+         }
 
+         mScanCallback = null;
+         mScanning = false;
+         handler = null;
+    }
 
+    private void scanComplete(){
+        if(mScanResults.isEmpty()){
+            return;
         }
-        else{
-            System.out.println("no work");
+
+        for(String deviceAddress: mScanResults.keySet()){
+            Log.d("ClientActivity", "Found Device: "+ deviceAddress);
         }
     }
 
