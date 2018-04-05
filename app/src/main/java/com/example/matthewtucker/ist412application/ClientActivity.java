@@ -107,6 +107,7 @@ public class ClientActivity extends AppCompatActivity {
         btleScanCallback = new BtleScanCallback(mScanResults);
         bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
 
+        //change BLE5 to whatever your device name in order for this app to be able to connect
         ScanFilter scanFilter = new ScanFilter.Builder().setDeviceName("BLE5").build();
         List<ScanFilter> filters = new ArrayList<>();
         filters.add(scanFilter);
@@ -203,6 +204,7 @@ public class ClientActivity extends AppCompatActivity {
             if(newState == BluetoothProfile.STATE_CONNECTED){
                 connected = true;
                 System.out.println("Connected to "+gatt.getDevice().getName());
+                gatt.discoverServices();
             }
 
             else if(newState == BluetoothProfile.STATE_DISCONNECTED){
@@ -210,6 +212,11 @@ public class ClientActivity extends AppCompatActivity {
             }
         }
     }
+
+   // @Override
+   // public void onServicesDiscovered(BluetoothGatt gatt, int status){
+       // super.onServicesDiscovered(gatt,status);
+    //}
 
     public void disconnectGattServer(){
         connected = false;

@@ -23,12 +23,4 @@
 
     <include layout="@layout/content_client" />
 
-    <Button
-        android:text="Start Scan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/start_scan_button"
-        app:layout_anchorGravity="center_vertical|center_horizontal"
-        android:layout_gravity="center_vertical|center_horizontal" />
-
 </android.support.design.widget.CoordinatorLayout>
