@@ -5,6 +5,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.BluetoothLeScanner;
@@ -16,6 +19,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -38,9 +42,11 @@ public class ClientActivity extends AppCompatActivity {
     private Handler handler;
     private String uuid;
     private UUID serviceUuid;
+    private UUID characteristicUuid;
     private boolean connected;
     private BluetoothGatt gatt;
     private Button disconnect;
+    private String uuid2;
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int REQUEST_FINE_LOCATION =2;
     private Map<String, BluetoothDevice> mScanResults;
@@ -79,9 +85,10 @@ public class ClientActivity extends AppCompatActivity {
             }
         });
 
-        uuid = "5154474C-9000-0101-0004-000000000000";
-        String uuid2 ="01284754-3C5A-4712-A2B6-13EE4BFE4562";
+        uuid = "5154474C-9000-0101-0001-000000000001";
+        uuid2 ="5154474C-9000-0101-0004-000000000000";
         serviceUuid = UUID.fromString(uuid);
+        characteristicUuid = UUID.fromString(uuid2);
 
     }
 
@@ -211,12 +218,151 @@ public class ClientActivity extends AppCompatActivity {
                 disconnectGattServer();
             }
         }
+
+        @Override
+        public void onServicesDiscovered(BluetoothGatt gatt, int status){
+            super.onServicesDiscovered(gatt,status);
+
+            if(status!= BluetoothGatt.GATT_SUCCESS){
+                System.out.println("GATT SUCCESS");
+                return;
+            }
+
+            BluetoothGattService service = gatt.getService(serviceUuid);
+            BluetoothGattCharacteristic characteristic = service.getCharacteristic(characteristicUuid);
+            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(characteristicUuid);
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            gatt.writeDescriptor(descriptor);
+
+            /*List<BluetoothGattCharacteristic> matchingCharacteristics = findCharacteristics(gatt);
+            if(matchingCharacteristics.isEmpty()){
+                System.out.println("No characteristics");
+            }*/
+
+        }
+
+        @Override
+        public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status){
+            BluetoothGattService service = gatt.getService(serviceUuid);
+            BluetoothGattCharacteristic characteristic = service.getCharacteristic(characteristicUuid);
+            characteristic.setValue(new byte[]{1,1});
+            gatt.writeCharacteristic(characteristic);
+        }
+
+        @Override
+        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic){
+            System.out.println(characteristic.getValue());
+        }
+
+       @Override
+       public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic,int status){
+            super.onCharacteristicRead(gatt, characteristic, status);
+
+            if(status == BluetoothGatt.GATT_SUCCESS){
+                readCharacteristic(characteristic);
+                System.out.println("Characteristic Read");
+            }
+            else{
+                System.out.println("Characteristic NOT Read");
+            }
+       }
+
+        private void readCharacteristic(BluetoothGattCharacteristic characteristic){
+            byte[] messageBytes = characteristic.getValue();
+            String message  = " "+ messageBytes;
+            if(message ==null){
+                return;
+            }
+        }
+
+        public List<BluetoothGattCharacteristic> findCharacteristics(BluetoothGatt bluetoothGatt){
+            List<BluetoothGattCharacteristic> matchingCharacteristics = new ArrayList<>();
+            List<BluetoothGattService> serviceList = bluetoothGatt.getServices();
+
+            BluetoothGattService service = findService(serviceList);
+
+            if(service == null){
+                return matchingCharacteristics;
+            }
+
+            List<BluetoothGattCharacteristic> characteristicList = service.getCharacteristics();
+            for(BluetoothGattCharacteristic characteristic: characteristicList){
+                if(isMatchingCharacteristic(characteristic)){
+                    matchingCharacteristics.add(characteristic);
+                }
+
+            }
+            return matchingCharacteristics;
+        }
+
+        private boolean isMatchingCharacteristic(BluetoothGattCharacteristic characteristic){
+            if(characteristic == null){
+                return false;
+
+            }
+
+            UUID uuid = characteristic.getUuid();
+            return matchesCharacteristicUuidString(uuid.toString());
+        }
+
+        private boolean matchesCharacteristicUuidString(String characteristicId){
+            return uuidMatches(characteristicId, uuid2);
+        }
+
+
+        @Nullable
+        public BluetoothGattCharacteristic findCharacteristic(BluetoothGatt gatt, String uuidString) {
+            List<BluetoothGattService> serviceList = gatt.getServices();
+            BluetoothGattService service = findService(serviceList);
+            if (service == null) {
+                return null;
+            }
+            List<BluetoothGattCharacteristic> characteristicList = service.getCharacteristics();
+            for (BluetoothGattCharacteristic characteristic : characteristicList) {
+                if (characteristicMatches(characteristic, uuidString)) {
+                    return characteristic;
+                }
+            }
+            return null;
+        }
+
+
+        private boolean characteristicMatches(BluetoothGattCharacteristic characteristic, String uuidString){
+            if(characteristic == null){
+                return false;
+            }
+
+            UUID uuid3 = characteristic.getUuid();
+            return(uuidMatches(uuid3.toString(), uuidString));
+        }
+
+        @Nullable
+        private BluetoothGattService findService (List<BluetoothGattService> serviceList){
+            for(BluetoothGattService service : serviceList){
+                String serviceIdString = service.getUuid().toString();
+                if(matchesServiceUuidString(serviceIdString)){
+                    return service;
+                }
+            }
+            return null;
+        }
+
+        private boolean matchesServiceUuidString(String serviceId){
+            return uuidMatches(serviceId, uuid);
+        }
+
+        private  boolean uuidMatches(String uuid, String... matches){
+            for(String match: matches){
+                if(uuid.equalsIgnoreCase(match)){
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 
-   // @Override
-   // public void onServicesDiscovered(BluetoothGatt gatt, int status){
-       // super.onServicesDiscovered(gatt,status);
-    //}
+
 
     public void disconnectGattServer(){
         connected = false;
