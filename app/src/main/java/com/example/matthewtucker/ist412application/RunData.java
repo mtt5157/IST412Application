@@ -1,57 +1,63 @@
 package com.example.matthewtucker.ist412application;
 
+import java.sql.Time;
+import java.util.Random;
+
 public class RunData {
 
     private final Random random = new Random();
+    private int[] speeds;
+    private int maxSpeed;
+    private int averageSpeed;
+    private int maxHeight;
+    private int time;
 
-    public int getMillisInDay() {
+    public RunData()
+    {
+        generateRunData();
+    }
 
+
+    public void generateRunData()
+    {
+        //random time
         int millisInDay = 24 * 60 * 60 * 1000;
         Time time = new Time((long) random.nextInt(millisInDay));
 
-        return millisInDay;
+        //random speeds
+        speeds = new int[5];
+        maxSpeed= 0;
+        int totalSpeed = 0;
+        for (int j = 0; j < 5; j++) {
+            getSpeeds()[j] = random.nextInt(50);
+            if (getSpeeds()[j]> getMaxSpeed())
+                maxSpeed = getSpeeds()[j];
+            totalSpeed+=getSpeeds()[j];
+        }
+        averageSpeed = totalSpeed/5;
+
+        //random height
+        maxHeight = random.nextInt(15);
     }
 
-    public void setMillisInDay() {
-
-    }
 
     public int[] getSpeeds() {
-
-        int[] speeds = new int[5];
-        int maxSpeed = 0;
-        for (int j = 0; j < 5; j++) {
-            speeds[j] = random.nextInt(50);
-            if (speeds[j] > maxSpeed)
-                maxSpeed = speeds[j];
-        }
-
         return speeds;
     }
 
-    public void setSpeeds() {
-
-    }
-
-    public int getTotalSpeed() {
-
-        int totalSpeed = 0;
-        for (int k = 0; k < 5; k++) {
-            totalSpeed += speeds[k];
-        }
-        int avgSpeed = totalSpeed / 5;
-
-        return avgSpeed;
-    }
-
     public int getMaxHeight() {
-
-        int maxHeight = random.nextInt(15);
-
         return maxHeight;
     }
 
-    public void setMaxHeight(){
+    public int getTime() {
+        return time;
+    }
 
+    public int getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public int getAverageSpeed() {
+        return averageSpeed;
     }
 }
