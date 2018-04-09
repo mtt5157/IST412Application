@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private Button connectToBoard;
     private Button switchToRunData;
     private Button switchToAggData;
+    private Button switchToCritique;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ViewAggRunData.class));
             }
         });
+
+        switchToCritique  = (Button) findViewById(R.id.switch_to_critique);
+
+        switchToCritique.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(MainActivity.this, CritiqueActivity.class));
+            }
+        });
+
 
     }
 

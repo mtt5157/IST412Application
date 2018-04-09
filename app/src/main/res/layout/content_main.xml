@@ -38,4 +38,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="144dp"
         android:text="View Basic Run Data" />
+
+    <Button
+        android:id="@+id/switch_to_critique"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="23dp"
+        android:text="Run Critique" />
 </RelativeLayout>
