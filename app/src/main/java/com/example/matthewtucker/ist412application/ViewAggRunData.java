@@ -74,15 +74,15 @@ public class ViewAggRunData extends AppCompatActivity {
         TextView r3tv1 = new TextView(this);
         r3tv1.setText("Average Speed: ");
         //row3 find avg speed
-        int totalSpeed = 0;
+        float totalSpeed = 0;
         for (int i=0;i<5;i++)
         {
             totalSpeed += rundata[i].getAverageSpeed();
         }
-        int avgSpeed = totalSpeed/5;
+        float avgSpeed = totalSpeed/5;
 
         TextView r3tv2 = new TextView(this);
-        r3tv2.setText(Integer.toString(avgSpeed));
+        r3tv2.setText(Float.toString(avgSpeed));
         row3.addView(r3tv1);
         row3.addView(r3tv2);
 
