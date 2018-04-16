@@ -25,8 +25,6 @@ public class EmergencySignal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emergency_signal);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        submissionTable = (TableLayout) findViewById(R.id.submitData);
-        setTable();
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -39,44 +37,18 @@ public class EmergencySignal extends AppCompatActivity {
         });
     }
 
-    private void setTable()
+    private void submitForm()
     {
-        //row1 ON/OFF
-        TableRow row1 = new TableRow(this);
-        TextView r1tv1 = new TextView(this);
-        r1tv1.setText("Emergency signal: ");
-        Switch onOff = new Switch(this);
-        row1.addView(r1tv1);
-        row1.addView(onOff);
+        Switch onOff = (Switch) findViewById(R.id.onOff);
+        TextView phoneNumber = (TextView) findViewById(R.id.phoneNumber);
+        TextView seconds = (TextView) findViewById(R.id.seconds);
+        String phone = (String) phoneNumber.getText();
+        String sec = (String) seconds.getText();
 
+        emergencyForm newSignal = new emergencyForm(phone, true, sec);
 
-        //row2 PHONENUMBER
-        TableRow row2 = new TableRow(this);
-        TextView r2tv1 = new TextView(this);
-        r2tv1.setText("Phone Number: ");
-        EditText phoneNumber = new EditText(this);
-        row2.addView(r2tv1);
-        row2.addView(phoneNumber);
-
-
-        //row3 SECONDS
-        TableRow row3 = new TableRow(this);
-        TextView r3tv1 = new TextView(this);
-        r3tv1.setText("How many seconds until emergency services are contacted: ");
-        EditText seconds = new EditText(this);
-        row3.addView(r3tv1);
-        row3.addView(seconds);
-
-        //row3 SUBMIT
-        TableRow row4 = new TableRow(this);
-        Button submission = new Button(this);
-        submission.setText("submit");
-        row4.addView(submission);
-
-        submissionTable.addView(row1);
-        submissionTable.addView(row2);
-        submissionTable.addView(row3);
-        submissionTable.addView(row4);
     }
+
+
 
 }
