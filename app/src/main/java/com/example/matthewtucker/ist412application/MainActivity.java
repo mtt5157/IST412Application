@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, CreatePhotoActivity.class));
             }
         });
+
         switchToEmergency  = (Button) findViewById(R.id.switch_to_emergency);
 
         switchToEmergency.setOnClickListener(new View.OnClickListener(){
