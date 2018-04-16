@@ -41,6 +41,10 @@
         <activity
             android:name=".CritiqueActivity"
             android:label="@string/title_activity_critique"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EmergencySignal"
+            android:label="@string/title_activity_emergency_signal"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
