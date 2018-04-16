@@ -33,12 +33,14 @@ public class CreatePhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_photo);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
         int id = getBaseContext().getResources().getIdentifier("image2", "mimap", getBaseContext().getPackageName());
         imageView = (ImageView) findViewById(R.id.run_image_view);
         imageView.setImageResource(id);
         imageView.setVisibility(View.VISIBLE);
+        RunData runData = new RunData();
+
 
 
 
@@ -46,6 +48,8 @@ public class CreatePhotoActivity extends AppCompatActivity {
         exportPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+               Bitmap image1 = writeText("Average Speed:"+runData.getAverageSpeed(),imageView.getWidth(), Color.RED);
+               imageView.setImageBitmap(image1);
                imageView.buildDrawingCache();
                Bitmap map = imageView.getDrawingCache();
 
@@ -77,7 +81,7 @@ public class CreatePhotoActivity extends AppCompatActivity {
     }
 
     public void scanFile(Context context, Uri imageUri){
-      ;
+
     }
 
     public Bitmap writeText(String text, int width, int color){

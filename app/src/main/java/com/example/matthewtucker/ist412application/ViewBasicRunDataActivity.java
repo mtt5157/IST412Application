@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ public class ViewBasicRunDataActivity extends AppCompatActivity {
 
     private TableLayout dataTable;
     private final Random random = new Random();
+    private Button shareRideData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +27,7 @@ public class ViewBasicRunDataActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         dataTable = (TableLayout) findViewById(R.id.submitData);
         addRandomData();
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
