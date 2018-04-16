@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +51,8 @@ public class ClientActivity extends AppCompatActivity {
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int REQUEST_FINE_LOCATION =2;
     private Map<String, BluetoothDevice> mScanResults;
+    private boolean mInitialized;
+    private boolean echoInitialized;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,6 +201,8 @@ public class ClientActivity extends AppCompatActivity {
         gatt = device.connectGatt(this, false, clientCallback);
     }
 
+
+
     private class GattClientCallback extends BluetoothGattCallback{
         @Override
       public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState){
@@ -212,6 +217,7 @@ public class ClientActivity extends AppCompatActivity {
                 connected = true;
                 System.out.println("Connected to "+gatt.getDevice().getName());
                 gatt.discoverServices();
+
             }
 
             else if(newState == BluetoothProfile.STATE_DISCONNECTED){
@@ -230,29 +236,27 @@ public class ClientActivity extends AppCompatActivity {
 
             BluetoothGattService service = gatt.getService(serviceUuid);
             BluetoothGattCharacteristic characteristic = service.getCharacteristic(characteristicUuid);
-            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(characteristicUuid);
-            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            gatt.writeDescriptor(descriptor);
+            characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
+            mInitialized = gatt.setCharacteristicNotification(characteristic,true);
 
-            /*List<BluetoothGattCharacteristic> matchingCharacteristics = findCharacteristics(gatt);
-            if(matchingCharacteristics.isEmpty()){
-                System.out.println("No characteristics");
-            }*/
+            System.out.println("DID THIS WORK: "+gatt.readCharacteristic(characteristic));
+
+
+
+
+
 
         }
 
-        @Override
-        public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status){
-            BluetoothGattService service = gatt.getService(serviceUuid);
-            BluetoothGattCharacteristic characteristic = service.getCharacteristic(characteristicUuid);
-            characteristic.setValue(new byte[]{1,1});
-            gatt.writeCharacteristic(characteristic);
-        }
 
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic){
+            super.onCharacteristicChanged(gatt, characteristic);
+            readCharacteristic(characteristic);
             System.out.println(characteristic.getValue());
         }
+
+
 
        @Override
        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic,int status){
@@ -261,6 +265,12 @@ public class ClientActivity extends AppCompatActivity {
             if(status == BluetoothGatt.GATT_SUCCESS){
                 readCharacteristic(characteristic);
                 System.out.println("Characteristic Read");
+                byte [] result = characteristic.getValue();
+               for(int i =0; i<result.length; i++){
+                   System.out.print(result[i]);
+               }
+                System.out.println(characteristic);
+
             }
             else{
                 System.out.println("Characteristic NOT Read");
