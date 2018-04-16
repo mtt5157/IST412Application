@@ -18,7 +18,7 @@
         android:layout_marginTop="41dp"
         android:text="Total Run Data"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintBottom_toTopOf="@+id/runDataTable"
+        app:layout_constraintBottom_toTopOf="@+id/submitData"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
