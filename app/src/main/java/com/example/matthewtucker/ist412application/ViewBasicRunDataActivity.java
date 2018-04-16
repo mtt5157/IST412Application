@@ -23,7 +23,7 @@ public class ViewBasicRunDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_basic_run_data);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        dataTable = (TableLayout) findViewById(R.id.runDataTable);
+        dataTable = (TableLayout) findViewById(R.id.submitData);
         addRandomData();
 
 

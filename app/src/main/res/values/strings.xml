@@ -6,5 +6,9 @@
     <string name="title_activity_view_basic_run_data">ViewBasicRunDataActivity</string>
     <string name="title_activity_view_agg_run_data">ViewAggRunData</string>
     <string name="title_activity_critique">CritiqueActivity</string>
+<<<<<<< HEAD
     <string name="title_activity_create_photo">CreatePhotoActivity</string>
+=======
+    <string name="title_activity_emergency_signal">EmergencySignal</string>
+>>>>>>> 8a79bd822fbf922d5e2c6449a19935d6abc74388
 </resources>

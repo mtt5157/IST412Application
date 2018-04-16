@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private Button switchToAggData;
     private Button switchToCritique;
     private Button switchToSocialMediaImage;
+    private Button switchToEmergency;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +69,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, CreatePhotoActivity.class));
             }
         });
+        switchToEmergency  = (Button) findViewById(R.id.switch_to_emergency);
+
+        switchToEmergency.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(MainActivity.this, EmergencySignal.class));
+            }
+        });
+
     }
 
     @Override

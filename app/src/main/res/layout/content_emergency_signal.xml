@@ -16,7 +16,7 @@
         android:layout_marginEnd="122dp"
         android:layout_marginStart="123dp"
         android:layout_marginTop="41dp"
-        android:text="Run Data"
+        android:text="Emergency Signal"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintBottom_toTopOf="@+id/submitData"
         app:layout_constraintEnd_toEndOf="parent"

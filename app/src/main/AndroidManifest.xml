@@ -44,7 +44,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CreatePhotoActivity"
-            android:label="@string/title_activity_create_photo"
+            android:label="@string/title_activity_create_photo" />
+        <activity
+            android:name=".EmergencySignal"
+            android:label="@string/title_activity_emergency_signal"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
