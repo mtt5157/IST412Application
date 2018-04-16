@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private Button switchToRunData;
     private Button switchToAggData;
     private Button switchToCritique;
+    private Button switchToSocialMediaImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +61,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        switchToSocialMediaImage = (Button) findViewById(R.id.switch_to_image);
+        switchToSocialMediaImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, CreatePhotoActivity.class));
+            }
+        });
     }
 
     @Override

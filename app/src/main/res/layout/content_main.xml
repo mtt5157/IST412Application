@@ -19,16 +19,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="85dp"
+        android:layout_marginBottom="164dp"
         android:text="View Total Run Data" />
 
     <Button
-        android:text="Connect to Board"
+        android:id="@+id/switch_to_connect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/switch_to_connect" />
+        android:layout_marginTop="158dp"
+        android:text="Connect to Board" />
 
     <Button
         android:id="@+id/switch_to_run_data"
@@ -36,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="144dp"
+        android:layout_marginBottom="218dp"
         android:text="View Basic Run Data" />
 
     <Button
@@ -45,6 +46,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="23dp"
+        android:layout_marginBottom="117dp"
         android:text="Run Critique" />
+
+    <Button
+        android:id="@+id/switch_to_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="69dp"
+        android:text="Social Media Image" />
 </RelativeLayout>
