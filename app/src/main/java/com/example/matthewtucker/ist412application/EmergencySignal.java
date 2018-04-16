@@ -62,7 +62,7 @@ public class EmergencySignal extends AppCompatActivity {
         //row3 SECONDS
         TableRow row3 = new TableRow(this);
         TextView r3tv1 = new TextView(this);
-        r2tv1.setText("How many seconds until emergency services are contacted: ");
+        r3tv1.setText("How many seconds until emergency services are contacted: ");
         EditText seconds = new EditText(this);
         row3.addView(r3tv1);
         row3.addView(seconds);
