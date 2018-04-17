@@ -1,4 +1,4 @@
-package com.example.matthewtucker.ist412application;
+package com.example.matthewtucker.ist412application.Activities;
 
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -14,6 +14,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.example.matthewtucker.ist412application.R;
 
 import java.sql.Time;
 

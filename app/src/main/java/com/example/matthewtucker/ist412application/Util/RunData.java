@@ -1,4 +1,4 @@
-package com.example.matthewtucker.ist412application;
+package com.example.matthewtucker.ist412application.Util;
 
 import java.sql.Time;
 import java.util.Random;

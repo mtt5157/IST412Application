@@ -1,4 +1,4 @@
-package com.example.matthewtucker.ist412application;
+package com.example.matthewtucker.ist412application.Activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.example.matthewtucker.ist412application.R;
 
 import java.sql.Time;
 import java.util.Random;

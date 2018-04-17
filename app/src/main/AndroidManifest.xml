@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ClientActivity"
+            android:name=".Activities.ClientActivity"
             android:label="@string/title_activity_client"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -33,22 +33,22 @@
             android:label="@string/title_activity_test"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ViewBasicRunDataActivity"
+            android:name=".Activities.ViewBasicRunDataActivity"
             android:label="@string/title_activity_view_basic_run_data"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ViewAggRunData"
+            android:name=".Activities.ViewAggRunData"
             android:label="@string/title_activity_view_agg_run_data"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CritiqueActivity"
+            android:name=".Activities.CritiqueActivity"
             android:label="@string/title_activity_critique"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CreatePhotoActivity"
+            android:name=".Activities.CreatePhotoActivity"
             android:label="@string/title_activity_create_photo" />
         <activity
-            android:name=".EmergencySignal"
+            android:name=".Activities.EmergencySignal"
             android:label="@string/title_activity_emergency_signal"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
