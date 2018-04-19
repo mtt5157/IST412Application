@@ -1,4 +1,4 @@
-package com.example.matthewtucker.ist412application;
+package com.example.matthewtucker.ist412application.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,19 +6,19 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.example.matthewtucker.ist412application.R;
+import com.example.matthewtucker.ist412application.Util.RunData;
 
 import java.io.File;
 import java.io.FileNotFoundException;
