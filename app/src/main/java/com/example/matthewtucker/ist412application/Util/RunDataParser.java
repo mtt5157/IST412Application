@@ -25,6 +25,7 @@ public class RunDataParser {
 
     public void parseData(byte[] bytes){
         String bytesToString = bytes.toString();
+        System.out.println("String "+bytesToString);
         accX = convertAcc(bytesToString.substring(2,4)+""+bytesToString.substring(0,2));
         accY = convertAcc(bytesToString.substring(6,8)+""+bytesToString.substring(4,6));
         accZ = convertAcc(bytesToString.substring(10,12)+""+bytesToString.substring(8,10));
@@ -36,6 +37,8 @@ public class RunDataParser {
         temp = convertTemp(bytesToString.substring(26,28)+""+bytesToString.substring(24,26));
 
         model.addToPackets(getData());
+
+
 
 
     }

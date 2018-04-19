@@ -95,7 +95,7 @@ public class ClientActivity extends AppCompatActivity {
         uuid2 ="5154474C-9000-0101-0004-000000000000";
         serviceUuid = UUID.fromString(uuid);
         characteristicUuid = UUID.fromString(uuid2);
-
+        parser = new RunDataParser();
     }
 
 
@@ -233,15 +233,22 @@ public class ClientActivity extends AppCompatActivity {
             super.onServicesDiscovered(gatt,status);
 
             if(status!= BluetoothGatt.GATT_SUCCESS){
-                System.out.println("GATT SUCCESS");
+                System.out.println("GATT Failure");
                 return;
+            }
+
+            if(status == BluetoothGatt.GATT_SUCCESS){
+                System.out.println("Success");
+
             }
 
             BluetoothGattService service = gatt.getService(serviceUuid);
             BluetoothGattCharacteristic characteristic = service.getCharacteristic(characteristicUuid);
+            if(characteristic == null){
+                System.out.println("Characteristic null");
+            }
             characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
             mInitialized = gatt.setCharacteristicNotification(characteristic,true);
-
             gatt.readCharacteristic(characteristic);
 
         }
@@ -261,15 +268,17 @@ public class ClientActivity extends AppCompatActivity {
             super.onCharacteristicRead(gatt, characteristic, status);
 
             if(status == BluetoothGatt.GATT_SUCCESS){
-                readCharacteristic(characteristic);
-                byte[] bytes =characteristic.getValue();
-                parser.parseData(bytes);
+                if(characteristic == null){
+                    System.out.println("Characterisitic null");
+                }
 
-            }
-            else{
-                System.out.println("Characteristic NOT Read");
-            }
-       }
+                byte[] bytes =characteristic.getValue();
+                if(bytes !=null){
+                    System.out.println(bytes);
+                    parser.parseData(bytes);
+                }
+                }
+        }
 
         private void readCharacteristic(BluetoothGattCharacteristic characteristic){
             byte[] messageBytes = characteristic.getValue();
