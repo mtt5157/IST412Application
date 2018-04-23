@@ -8,4 +8,5 @@
     <string name="title_activity_critique">CritiqueActivity</string>
     <string name="title_activity_create_photo">CreatePhotoActivity</string>
     <string name="title_activity_emergency_signal">EmergencySignal</string>
+    <string name="title_activity_challenge_mode">ChallengeMode</string>
 </resources>
