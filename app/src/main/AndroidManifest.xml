@@ -50,6 +50,10 @@
         <activity
             android:name=".Activities.EmergencySignal"
             android:label="@string/title_activity_emergency_signal"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.ChallengeMode"
+            android:label="@string/title_activity_challenge_mode"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
