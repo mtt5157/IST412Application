@@ -1,5 +1,6 @@
 package com.example.matthewtucker.ist412application.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +23,8 @@ import java.sql.Time;
 
 public class EmergencySignal extends AppCompatActivity {
 
+    private Button submitForm;
+
     private TableLayout submissionTable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +33,12 @@ public class EmergencySignal extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        submitForm = (Button) findViewById(R.id.submit);
+        submitForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                submitForm();
+                startActivity(new Intent(EmergencySignal.this, MainActivity.class));
             }
         });
     }
@@ -45,10 +48,11 @@ public class EmergencySignal extends AppCompatActivity {
         Switch onOff = (Switch) findViewById(R.id.onOff);
         TextView phoneNumber = (TextView) findViewById(R.id.phoneNumber);
         TextView seconds = (TextView) findViewById(R.id.seconds);
-        String phone = (String) phoneNumber.getText();
-        String sec = (String) seconds.getText();
+        String phone = ""+ phoneNumber.getText();
+        String sec = ""+ seconds.getText();
 
         emergencyForm newSignal = new emergencyForm(phone, true, sec);
+
 
     }
 

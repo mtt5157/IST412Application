@@ -62,11 +62,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        switchToSocialMediaImage = (Button) findViewById(R.id.switch_to_image);
+        switchToSocialMediaImage = (Button) findViewById(R.id.switch_to_challenge);
         switchToSocialMediaImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, CreatePhotoActivity.class));
+                startActivity(new Intent(MainActivity.this, ChallengeMenuActivity.class));
             }
         });
 

@@ -5,9 +5,10 @@ import java.util.ArrayList;
 public class RunDataModel {
     private static RunDataModel instance = null;
     private ArrayList<DataPacket> packets;
+    private double[] speeds;
 
     protected RunDataModel(){
-
+    speeds = new double[5];
     }
 
     public static RunDataModel getInstance(){
@@ -19,6 +20,14 @@ public class RunDataModel {
 
     public void addToPackets(DataPacket packet){
         packets.add(packet);
+    }
+
+    public void addSpeed(int index, double speed){
+        speeds[index] = speed;
+    }
+
+    public double[] getSpeeds(){
+        return this.speeds;
     }
 
 }

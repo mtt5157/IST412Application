@@ -3,7 +3,7 @@ package com.example.matthewtucker.ist412application.Util;
 import java.sql.Time;
 import java.util.Random;
 
-public class RunData {
+public class AggregateRunData {
     private static RunData instance = null;
     private final Random random = new Random();
     private int[] speeds;
@@ -12,17 +12,12 @@ public class RunData {
     private int maxHeight;
     private int time;
 
-    protected RunData()
-    {
+    public AggregateRunData(){
         generateRunData();
     }
 
-    public static RunData getInstance(){
-        if (instance == null){
-            instance = new RunData();
-        }
-        return instance;
-    }
+
+
 
     public void generateRunData()
     {
@@ -67,3 +62,5 @@ public class RunData {
         return averageSpeed;
     }
 }
+
+

@@ -31,7 +31,7 @@ public class CritiqueActivity extends AppCompatActivity {
         setContentView(R.layout.activity_critique);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        data = new RunData();
+        data = RunData.getInstance();
         perfectSpeed = 25.5;
         perfectHeight = 20.5;
         perfectRunTime = 55;

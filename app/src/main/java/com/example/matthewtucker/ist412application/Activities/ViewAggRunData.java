@@ -1,16 +1,20 @@
 package com.example.matthewtucker.ist412application.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.matthewtucker.ist412application.Models.RunDataModel;
 import com.example.matthewtucker.ist412application.R;
+import com.example.matthewtucker.ist412application.Util.AggregateRunData;
 import com.example.matthewtucker.ist412application.Util.RunData;
 
 import java.sql.Time;
@@ -20,26 +24,30 @@ public class ViewAggRunData extends AppCompatActivity {
 
     private TableLayout dataTable;
     private final Random random = new Random();
-    private RunData[] rundata = new RunData[5];
+    private AggregateRunData[] rundata = new AggregateRunData[5];
+    private RunDataModel model;
+    private Button switchToGraph;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_agg_run_data);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        model = RunDataModel.getInstance();
         dataTable = (TableLayout) findViewById(R.id.runDataTable);
         generateRunData();
         addRunData();
 
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        switchToGraph = (Button) findViewById(R.id.switch_to_graph);
+        switchToGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(ViewAggRunData.this, AggregateGraphActivity.class));
             }
         });
+
+
+
     }
 
     private void addRunData()
@@ -63,9 +71,12 @@ public class ViewAggRunData extends AppCompatActivity {
         r2tv1.setText("Max Speed: ");
         //row2 random speed array
         int maxSpeed = rundata[0].getMaxSpeed();
-        for (int i = 1;i<5;i++)
-            if (rundata[i].getMaxSpeed()>maxSpeed)
+        for (int i = 1;i<5;i++) {
+            if (rundata[i].getMaxSpeed() > maxSpeed) {
                 maxSpeed = rundata[i].getMaxSpeed();
+                model.addSpeed(i,rundata[i].getMaxSpeed());
+            }
+        }
 
         TextView r2tv2 = new TextView(this);
         r2tv2.setText(Integer.toString(maxSpeed));
@@ -113,7 +124,7 @@ public class ViewAggRunData extends AppCompatActivity {
     private void generateRunData()
     {
         for (int i=0;i<5;i++)
-            rundata[i] = new RunData();
+            rundata[i] = new AggregateRunData();
     }
 
 }

@@ -16,6 +16,7 @@ import android.text.TextPaint;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toolbar;
 
 import com.example.matthewtucker.ist412application.R;
 import com.example.matthewtucker.ist412application.Util.RunData;
@@ -33,13 +34,12 @@ public class CreatePhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_photo);
-       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+
         int id = getBaseContext().getResources().getIdentifier("image2", "mimap", getBaseContext().getPackageName());
         imageView = (ImageView) findViewById(R.id.run_image_view);
         imageView.setImageResource(id);
         imageView.setVisibility(View.VISIBLE);
-        RunData runData = new RunData();
+        RunData runData = RunData.getInstance();
 
 
 
@@ -88,7 +88,7 @@ public class CreatePhotoActivity extends AppCompatActivity {
         TextPaint textpaint = new TextPaint(Paint.ANTI_ALIAS_FLAG| Paint.LINEAR_TEXT_FLAG);
         textpaint.setStyle(Paint.Style.FILL);
         textpaint.setColor(Color.BLACK);
-        StaticLayout textLayout = new StaticLayout(text, textpaint, width, Layout.Alignment.ALIGN_CENTER, 1.0f, 1.0f, false);
+        StaticLayout textLayout = new StaticLayout(text, textpaint, width, Layout.Alignment.ALIGN_CENTER, 50.0f, 50.0f, false);
 
         Bitmap map = Bitmap.createBitmap(width, textLayout.getHeight(), Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(map);
