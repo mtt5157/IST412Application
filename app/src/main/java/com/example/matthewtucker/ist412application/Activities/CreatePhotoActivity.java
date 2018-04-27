@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+// Adam Warfield took the lead on this class with help from Matt Peron and Matt Tucker
 public class CreatePhotoActivity extends AppCompatActivity {
     private Button exportPhotoButton;
     private ImageView imageView;

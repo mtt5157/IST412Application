@@ -57,6 +57,11 @@ public class ClientActivity extends AppCompatActivity {
     private boolean mInitialized;
     private boolean echoInitialized;
     private RunDataParser parser;
+
+    // For this class, Matt Tucker, Matt Peron, and Adam Warfield worked collaboriatively. It is nearly impossible to attribute specific lines of code to one individual as we all sat with our
+    // computers open looking at the BigNerdRanch tutorial making suggestions for edits and debugging. We feel it would be unfair and quite frankly untrue to comment each indivudual
+    // method as if one person wrote it. This class took time up on every sprint
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);

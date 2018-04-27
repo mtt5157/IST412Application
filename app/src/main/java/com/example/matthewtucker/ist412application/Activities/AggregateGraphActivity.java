@@ -14,6 +14,8 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+
+//Matt Tucker handled this class
 public class AggregateGraphActivity extends AppCompatActivity {
     private AggregateRunData[] rundata = new AggregateRunData[5];
     AggregateRunData data;

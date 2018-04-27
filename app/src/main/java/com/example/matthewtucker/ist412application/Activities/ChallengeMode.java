@@ -21,6 +21,7 @@ import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
+
 public class ChallengeMode extends AppCompatActivity {
 
     private TableLayout table;
@@ -56,6 +57,7 @@ public class ChallengeMode extends AppCompatActivity {
             }
         });
 
+        // MAtt Tucker created this graph code
         graph = (GraphView) findViewById(R.id.graph1);
         series = new BarGraphSeries<>(new DataPoint[] {
                 new DataPoint(1, 25),

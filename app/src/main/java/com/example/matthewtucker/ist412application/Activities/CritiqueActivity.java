@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.matthewtucker.ist412application.R;
 import com.example.matthewtucker.ist412application.Util.RunData;
 
+// Matt Peron took the lead on this class with help from Matt Tucker and Adam Warfield
 public class CritiqueActivity extends AppCompatActivity {
     private RunData data;
     private double perfectSpeed;
